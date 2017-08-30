@@ -96,13 +96,6 @@ def get_job_titles(tree):
     return titles
 
 
-def get_occup_descr(tree):
-    """ @param: An xml tree for a particular occupation page """
-    """ @return: A string description of an occupation associated with a particular soc code -> Ex. "Perform duties that are instructional in nature or deliver..." """
-
-    return tree.find('description').text
-
-
 def get_tasks(soc_code):
     """ @param: A string soc code corresponding to a particular occupation """
     """ @return: A list of string task descriptions corresponding to each task for a particular occupation -> [<Task 1 Description>, <Task 2 Description>, ... , <Task N Description>] """
