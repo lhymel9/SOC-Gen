@@ -107,7 +107,7 @@ def get_tasks(soc_code):
 
 def get_dwa(soc_code):
     """ @param: A string soc code corresponding to a particular occupation """
-    """ @return: A list of string task descriptions corresponding to each DWA for a particular occupation -> [<DWA 1 Description>, <DWA 2 Description>, ... , <DWA N Description>] """
+    """ @return: A list of string dwa descriptions corresponding to each DWA for a particular occupation -> [<DWA 1 Description>, <DWA 2 Description>, ... , <DWA N Description>] """
 
     tree = get_dwa_xml(soc_code)
 

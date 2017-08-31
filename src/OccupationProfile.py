@@ -1,5 +1,6 @@
 import ExtractSOCData as extract
-import Comparisons as comp
+import ProcessData as proc
+import ComputeData as compute
 
 class DataProfile:
     """ Data componenet for an OccupationProfile """
@@ -14,7 +15,6 @@ class DataProfile:
             "dwa": extract.get_dwa(soc_code),
             "skills": extract.get_skills(soc_code)
         }
-    
 
     @property
     def all(self):
@@ -22,6 +22,13 @@ class DataProfile:
         """ @return: DataProfile _dict member """
 
         return self._dict
+
+    @property
+    def processed(self):
+        """ @param: self """
+        """ @return: DataProfile _dict memeber after application of nltk processing """
+
+        return proc.process_data_dict(self._dict)
 
 
     def set_attrib(self, elem, value):
@@ -38,7 +45,6 @@ class OccupationProfile:
         self._soc = soc_code
         self._data = DataProfile(soc_code)
         self._total = 0
-    
 
     @property
     def soc(self):
@@ -47,14 +53,12 @@ class OccupationProfile:
 
         return self._soc
 
-
     @property
     def data(self):
         """ @param: self """
         """ @return: OccupationProfile _data member """
 
         return self._data
-
 
     @property
     def total(self):
@@ -68,7 +72,7 @@ class OccupationProfile:
         """ @param: self, job information survey data (in the form of a dictionary) """
         """ @return: correlation total between the survey data and OccupationProfile _data memeber """
 
-        computed = comp.compute_score(self._data, survey_data)
+        computed = compute.compute_score(self._data, survey_data)
         self._total = computed
 
         return computed
