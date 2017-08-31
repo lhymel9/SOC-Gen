@@ -1,4 +1,8 @@
-from nltk.corpus import stopwords
+from nltk.corpus import stopwords as sw
+from nltk.stem import WordNetLemmatizer
+
+stops = set(sw.words('english'))
+wnl = WordNetLemmatizer()
 
 def process_data_dict(dictionary):
     """ @param: A DataProfile _dict member """
@@ -19,16 +23,16 @@ def preprocess_str(single):
     """ @param: A string """
     """ @return: A lowercased, stopped, split list of the string """
 
-    stops = set(stopwords.words('english'))
-    return [word for word in single.lower().split() if word.isalpha() and word not in stops]
+    unlemmatized = [word for word in single.lower().split() if word.isalpha() and word not in stops]
+    return [wnl.lemmatize(word) for word in unlemmatized]
 
 
 def preprocess_str_list(arr):
     """ @param: A list of strings """
     """ @return: A lowercased and stopped list """
 
-    stops = set(stopwords.words('english'))
-    return [word.lower() for word in arr if word.isalpha() and word not in stops]
+    unlemmatized = [word.lower() for word in arr if word.isalpha() and word not in stops]
+    return [wnl.lemmatize(word) for word in unlemmatized]
 
 
 def preprocess_tup_list(arr):
