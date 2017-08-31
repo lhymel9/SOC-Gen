@@ -8,8 +8,7 @@ def get_xml(page_url):
     """ @return: An xml tree associated with the entered API endpoint """
 
     req = Request(page_url)
-    req.add_header('Authorization',
-                       'Basic <O*NET_Dev_Key>')
+    req.add_header('Authorization', 'Basic <O*NET_Dev_Key>')
     page_xml = ET.fromstring(urlopen(req).read())
 
     return page_xml

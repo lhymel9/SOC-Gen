@@ -35,7 +35,7 @@ def preprocess_tup_list(arr):
     """ @param: A list of 2-variable string tuples """
     """ @return: A lowercased and stopped list of 2-variable string tuples """
 
-    titles, descriptions = zip(*arr)
+    titles, descriptions = zip(*arr) #unzip operation
     titles = preprocess_str_list(list(titles))
     descriptions = preprocess_str_list(list(descriptions))
     return list(zip(titles, descriptions))

@@ -31,10 +31,10 @@ class DataProfile:
         return proc.process_data_dict(self._dict)
 
 
-    def set_attrib(self, elem, value):
-        """ @params: self, the dictionary element of choice, proposed value """
+    def set_attrib(self, key, value):
+        """ @params: self, the dictionary key  element of choice, proposed new value """
 
-        self._dict[elem] = value
+        self._dict[key] = value
 
 
 
