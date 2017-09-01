@@ -11,12 +11,14 @@ def run_main(keywords, industry):
     }
 
     print("Searching... " + industry + " " + keywords)
-    occupations = compute.remove_not_industry(survey['naics'], extract.get_search_results(keywords))
-    print("Found: " + str(len(occupations)) + " results")
+    occupations = compute.remove_not_industry(survey['naics'], extract.get_search_results(industry+"+"+keywords.replace(" ","+")))
 
     survey = proc.process_survey_dict(survey)
     profiles = compute.generate_profiles(occupations)
     occupation_profiles = compute.remove_outliers(survey, profiles)
+
+    for occup in occupation_profiles:
+        print("    " + " ".join(occup.data.all['title']))
 
     ranks = []
     for profile in occupation_profiles:

@@ -9,7 +9,7 @@ keywords = keywords.split(',')
 results = []
 for kw in keywords:
     industry = kw[:2]
-    search = kw[2:].replace(" ","+")
+    search = kw[2:]
     results.append(run_main(search, industry))
 
 with open('out', 'w') as out:

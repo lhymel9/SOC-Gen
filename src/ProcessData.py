@@ -24,6 +24,7 @@ def process_survey_dict(dictionary):
         "data": preprocess_str(dictionary["data"]),
         "naics": dictionary["naics"]
     }
+    print(processed_dict)
     return processed_dict
 
 

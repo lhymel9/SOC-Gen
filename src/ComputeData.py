@@ -56,7 +56,7 @@ def calc_total(survey, target):
     #print("From Description: ", from_description)
     #print("From Jobs: ", from_jobs)
     #print("")
-    return from_title + from_description + from_jobs
+    return from_title + from_jobs
 
 def calc_single(survey, target, key):
     if key == 'title': 
@@ -74,10 +74,12 @@ def calc_many(survey, target, key):
     return count*2.0
     
 def make_count(survey_arr, target_arr):
+    print("Comparing: " + "[" + ",".join(survey_arr) + "], " + "Against: " + "[" + ",".join(target_arr) + "]")
     count = 0
     for word in survey_arr:
-
-        if word in target_arr:
+       # print("Is " + word + " in " + ",".join(target_arr) + "?")
+        if word.lower() in target_arr:
+            #print("yes")
             count = count + 1
     return count
 
