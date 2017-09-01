@@ -1,0 +1,24 @@
+#,jobtitle,algo_estimate,human_estimate,result
+1,Store Manager,General and Operations Managers(111021),General and Operations Managers(111021),pass
+2,assistant director of homeland security,Security Managers(119199.07),General and Operations Managers(111021),improvement/questionable
+3,Operations Supervisor,Postmasters and Mail Superintendents(119131),General and Operations Managers(111021),fail
+4,Corporate Account Manager,General and Operations Managers(111021),General and Operations Managers(111021),pass
+5,New Business Development Executive,Marketing Managers(112021),General and Operations Managers(111021),improvement/questionable
+6,Corporate Project Manager,Wind Energy Project Managers(119199.10),General and Operations Managers(111021),fail
+7,Assistant Manager,Property Real Estate and Community Association Managers(119141),General and Operations Managers(111021),fail
+8,Product Manager,Industrial Production Managers(113051),General and Operations Managers(111021),improvement/questionable
+9,superintendent,Construction Managers(119021),General and Operations Managers(111021),fail
+10,Business Operational Excellence Coordinator,Administrative Services Managers(113011),General and Operations Managers(111021),improvement/questionable
+11,business development manager,Wind Energy Project Managers(119199.10),General and Operations Managers(111021),fail
+12,Operations manager,Wind Energy Project Managers(119199.10),General and Operations Managers(111021),fail
+13,Integrity Management Program Turnaround Coordinator,Emergency Management Directors(119161),Advertising and Promotions Managers(112011),fail
+14,Marketing & Promotions Coordinator,Marketing Managers(112021),Advertising and Promotions Managers(112011),improvement/questionable
+15,Market Development Manager,Training and Development Managers(113131),Marketing Managers(112021),fail
+16,Marketing assistant,Marketing Managers(112021),Marketing Managers(112021),pass
+17,Recruiter marketing coordinator,Marketing Managers(112021),Marketing Managers(112021),pass
+18,Manager Casino Marketing,Gaming Managers(119071),Marketing Managers(112021),improvement/questionable
+19,New Product Development Coordinator Analyst,Marketing Managers(112021),Marketing Managers(112021),pass
+20,Marketing Coordinator,Marketing Managers(112021),Marketing Managers(112021),pass
+21,Account Manager sales,Sales Managers(112022),Marketing Managers(112021),improvement/questionable
+22,chief executive officer,Chief Executives(111011),Chief Executives(111011),pass
+23,chief development officer,Chief Executives(111011),Chief Executives(111011),pass
