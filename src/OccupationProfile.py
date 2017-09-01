@@ -10,10 +10,7 @@ class DataProfile:
         self._dict = {
             "title": occup_xml.find('title').text,
             "description": occup_xml.find('description').text,
-            "jobs": extract.get_job_titles(occup_xml),
-            "tasks": extract.get_tasks(soc_code),
-            "dwa": extract.get_dwa(soc_code),
-            "skills": extract.get_skills(soc_code)
+            "jobs": extract.get_job_titles(occup_xml)
         }
         self._dict = proc.process_data_dict(self._dict)
 

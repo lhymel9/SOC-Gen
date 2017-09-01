@@ -1,5 +1,6 @@
 from nltk.corpus import stopwords as sw
 from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet as wn
 
 stops = set(sw.words('english'))
 wnl = WordNetLemmatizer()
@@ -11,10 +12,7 @@ def process_data_dict(dictionary):
     processed_dict = {
         "title": preprocess_str(dictionary["title"]),
         "description": preprocess_str(dictionary["description"]),
-        "jobs": preprocess_str_list(dictionary["jobs"]),
-        "tasks": preprocess_str_list(dictionary["tasks"]),
-        "dwa": preprocess_str_list(dictionary["dwa"]),
-        "skills": preprocess_tup_list(dictionary["skills"])
+        "jobs": preprocess_str_list(dictionary["jobs"])
     }
     return processed_dict
 
@@ -43,18 +41,6 @@ def preprocess_str_list(arr):
     if arr:
         return [preprocess_str(statement) for statement in arr]
     return []
-
-def preprocess_tup_list(arr):
-    """ @param: A list of 2-variable string tuples """
-    """ @return: A list of 2-variable list, lowercased, stopped, string tuples """
-    
-    if arr:
-        titles, descriptions = zip(*arr) #unzip operation
-        titles = preprocess_str_list(list(titles))
-        descriptions = preprocess_str_list(list(descriptions))
-        return list(zip(titles, descriptions))
-    return []
-
 
 def uniquify(arr):
     """ @param: A list of strings """

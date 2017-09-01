@@ -8,7 +8,7 @@ def get_xml(page_url):
     """ @return: An xml tree associated with the entered API endpoint """
     try:
         req = Request(page_url)
-        req.add_header('Authorization', 'Basic <O*NET_Dev_Key>')
+        req.add_header('Authorization', 'Basic c3RhdGFfcXVlcnk6MzI3NnVjeg==')
         page_xml = ET.fromstring(urlopen(req).read())
     except HTTPError:
         return None
@@ -52,24 +52,6 @@ def get_task_xml(soc_code):
     return tree
 
 
-def get_dwa_xml(soc_code):
-    """ See get_xml function """
-
-    url = 'https://services.onetcenter.org/ws/online/occupations/' + soc_code + '/summary/detailed_work_activities'
-    tree = get_xml(url)
-
-    return tree
-
-
-def get_skills_xml(soc_code):
-    """ See get_xml function """
-
-    url = 'https://services.onetcenter.org/ws/online/occupations/' + soc_code + '/summary/skills'
-    tree = get_xml(url)
-
-    return tree
-
-
 
 """                                 Map Functions                                   """
 
@@ -94,39 +76,3 @@ def get_job_titles(tree):
         titles = [title.text for title in title_samples.findall('title')]
 
     return titles
-
-
-def get_tasks(soc_code):
-    """ @param: A string soc code corresponding to a particular occupation """
-    """ @return: A list of string task descriptions corresponding to each task for a particular occupation -> [<Task 1 Description>, <Task 2 Description>, ... , <Task N Description>] """
-
-    tree = get_task_xml(soc_code)
-    if tree:
-        return list(map(get_tag_text, tree.findall('task')))
-    return []
-
-
-def get_dwa(soc_code):
-    """ @param: A stri`ng soc code corresponding to a particular occupation """
-    """ @return: A list of string dwa descriptions corresponding to each DWA for a particular occupation -> [<DWA 1 Description>, <DWA 2 Description>, ... , <DWA N Description>] """
-
-    tree = get_dwa_xml(soc_code)
-    if tree:
-        return list(map(get_tag_text, tree.findall('activity')))
-    return []
-
-
-def get_skills(soc_code):
-    """ @param: A string soc code corresponding to a particular occupation """
-    """ @return: A list of skill title and description tuples corresponding to each skill for a particular occupation -> [(<Skill 1 Title>, <Skill 1 Description>), ... , (<Skill N Title>, <Skill N Description>)] """
-
-    titles, descriptions = [], []
-
-    tree = get_skills_xml(soc_code)
-    if tree:
-        for elem in tree.findall('element'):
-            titles.append(elem.find('name').text)
-            descriptions.append(elem.find('description').text)
-                
-        return list(zip(titles, descriptions))
-    return []

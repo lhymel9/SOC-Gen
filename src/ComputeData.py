@@ -1,4 +1,5 @@
 import OccupationProfile as oc
+from collections import Counter
 
 def remove_not_industry(naics, occup_list):
     filtered = []
@@ -16,15 +17,46 @@ def generate_profiles(occup_list):
     return profile_list
 
 
-def make_count(survey_arr, target_arr):
-    count = 0
-    for word in survey_arr:
-        if word in target_arr:
-            count = count + 1
-    return count
+def remove_outliers(survey, occup_profiles):
+    filter = []
+    for idx in range(0,len(occup_profiles)):
+        word_blob = make_blob(idx, occup_profiles,survey['data'])
+        for word in occup_profiles[idx].data.all['title']:
+            if word not in word_blob:
+                filter.append(occup_profiles[idx])
+                break
+    return [x for x in occup_profiles if x not in filter]
+
+def make_blob(index, occup_profiles, survey):
+    final_blob = ""
+    for i in range(0, len(occup_profiles)):
+        if index != i and occup_profiles[i]:
+            shattered_list = [shatter_list(occup_profiles[i].data.all['title']), shatter_list(occup_profiles[i].data.all['description']), shatter_listoflist(occup_profiles[i].data.all['jobs'])]
+            shattered = " ".join(shattered_list)
+            final_blob = " ".join([final_blob, shattered])
+    return final_blob.split(" ")
+
+def shatter_list(unshattered):
+    return " ".join(unshattered)
+
+def shatter_listoflist(unshattered):
+    result = ""
+    for arr in unshattered:
+        result = " ".join([result, shatter_list(arr)])
+    return result
+
 
 def calc_total(survey, target):
-    return calc_single(survey, target, 'title') + calc_single(survey, target, 'description') + calc_many(survey, target, 'jobs') + calc_many(survey, target, 'tasks') + calc_many(survey, target, 'dwa') + calc_skills(survey, target)
+    #print(target['title'])
+    #print("-------------------")
+    from_title = calc_single(survey, target, 'title')
+    from_description = calc_single(survey, target, 'description')
+    from_jobs = calc_many(survey, target, 'jobs')
+    #print("From Title: ", from_title)
+    #print("From Description: ", from_description)
+    #print("From Jobs: ", from_jobs)
+    #print("")
+    return from_title + from_description + from_jobs
 
 def calc_single(survey, target, key):
     if key == 'title': 
@@ -36,29 +68,17 @@ def calc_single(survey, target, key):
     return count*factor
 
 def calc_many(survey, target, key):
-    if key == 'jobs':
-        factor = 2.0
-    else:
-        factor = 0.5
-
     count = 0
     for arr in target[key]:
         count += make_count(survey['data'], arr)
-    return count*factor
-
-def calc_skills(survey, target):
-    try:
-        titles, descriptions =  zip(*target['skills'])
-    except ValueError:
-        return 0
+    return count*2.0
     
-    titles_count, descriptions_count = 0, 0
-    for arr in list(titles):
-        titles_count += make_count(survey['data'], arr)
-    for arr in list(descriptions):
-        descriptions_count += make_count(survey['data'], arr)
+def make_count(survey_arr, target_arr):
+    count = 0
+    for word in survey_arr:
 
-    return titles_count*1.5 + descriptions_count*0.5
-
+        if word in target_arr:
+            count = count + 1
+    return count
 
 
