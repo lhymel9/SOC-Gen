@@ -1,5 +1,5 @@
 import ExtractSOCData as extract
-import ProcessData as proc
+import ProcessData  as proc
 import ComputeData as compute
 
 class DataProfile:
@@ -15,6 +15,7 @@ class DataProfile:
             "dwa": extract.get_dwa(soc_code),
             "skills": extract.get_skills(soc_code)
         }
+        self._dict = proc.process_data_dict(self._dict)
 
     @property
     def all(self):
@@ -22,13 +23,6 @@ class DataProfile:
         """ @return: DataProfile _dict member """
 
         return self._dict
-
-    @property
-    def processed(self):
-        """ @param: self """
-        """ @return: DataProfile _dict memeber after application of nltk processing """
-
-        return proc.process_data_dict(self._dict)
 
 
     def set_attrib(self, key, value):
@@ -72,7 +66,7 @@ class OccupationProfile:
         """ @param: self, job information survey data (in the form of a dictionary) """
         """ @return: correlation total between the survey data and OccupationProfile _data memeber """
 
-        computed = compute.compute_score(self._data, survey_data)
+        computed = compute.calc_total(survey_data, self._data.all)
         self._total = computed
 
         return computed

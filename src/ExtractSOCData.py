@@ -6,10 +6,12 @@ import xml.etree.ElementTree as ET
 def get_xml(page_url):
     """ @param: A string link to a particular O*NET API endpoint """
     """ @return: An xml tree associated with the entered API endpoint """
-
-    req = Request(page_url)
-    req.add_header('Authorization', 'Basic <O*NET_Dev_Key>')
-    page_xml = ET.fromstring(urlopen(req).read())
+    try:
+        req = Request(page_url)
+        req.add_header('Authorization', 'Basic <O*NET_Dev_Key>')
+        page_xml = ET.fromstring(urlopen(req).read())
+    except HTTPError:
+        return None
 
     return page_xml
 
@@ -19,7 +21,6 @@ def get_search_results(keyword):
     """ @return: A list of 2-variable tuples -> [(<soc>, <Occupation Title>), ...] """
 
     occupTuples = []
-    keyword = keyword.replace(" ", "+")
 
     url = 'https://services.onetcenter.org/ws/online/search?keyword=' + keyword
     searched_xml = get_xml(url)
@@ -100,17 +101,19 @@ def get_tasks(soc_code):
     """ @return: A list of string task descriptions corresponding to each task for a particular occupation -> [<Task 1 Description>, <Task 2 Description>, ... , <Task N Description>] """
 
     tree = get_task_xml(soc_code)
-
-    return list(map(get_tag_text, tree.findall('task')))
+    if tree:
+        return list(map(get_tag_text, tree.findall('task')))
+    return []
 
 
 def get_dwa(soc_code):
-    """ @param: A string soc code corresponding to a particular occupation """
+    """ @param: A stri`ng soc code corresponding to a particular occupation """
     """ @return: A list of string dwa descriptions corresponding to each DWA for a particular occupation -> [<DWA 1 Description>, <DWA 2 Description>, ... , <DWA N Description>] """
 
     tree = get_dwa_xml(soc_code)
-
-    return list(map(get_tag_text, tree.findall('activity')))
+    if tree:
+        return list(map(get_tag_text, tree.findall('activity')))
+    return []
 
 
 def get_skills(soc_code):
@@ -119,13 +122,11 @@ def get_skills(soc_code):
 
     titles, descriptions = [], []
 
-    try:
-        tree = get_skills_xml(soc_code)
-    except HTTPError:
-        return []
-
-    for elem in tree.findall('element'):
-        titles.append(elem.find('name').text)
-        descriptions.append(elem.find('description').text)
-            
-    return list(zip(titles, descriptions))
+    tree = get_skills_xml(soc_code)
+    if tree:
+        for elem in tree.findall('element'):
+            titles.append(elem.find('name').text)
+            descriptions.append(elem.find('description').text)
+                
+        return list(zip(titles, descriptions))
+    return []

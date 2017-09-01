@@ -23,8 +23,7 @@ def process_survey_dict(dictionary):
     """ @return: A processed (ready for comparison) job survey data dictionary """
 
     processed_dict = {
-        "title": preprocess_str(dictionary["title"]),
-        "description": preprocess_str(dictionary["description"]),
+        "data": preprocess_str(dictionary["data"]),
         "naics": dictionary["naics"]
     }
     return processed_dict
@@ -41,19 +40,23 @@ def preprocess_str_list(arr):
     """ @param: A list of strings """
     """ @return: A list of lists of lowercased and stopped words """
 
-    return [preprocess_str(statement) for statement in arr]
+    if arr:
+        return [preprocess_str(statement) for statement in arr]
+    return []
 
 def preprocess_tup_list(arr):
     """ @param: A list of 2-variable string tuples """
     """ @return: A list of 2-variable list, lowercased, stopped, string tuples """
+    
+    if arr:
+        titles, descriptions = zip(*arr) #unzip operation
+        titles = preprocess_str_list(list(titles))
+        descriptions = preprocess_str_list(list(descriptions))
+        return list(zip(titles, descriptions))
+    return []
 
-    titles, descriptions = zip(*arr) #unzip operation
-    titles = preprocess_str_list(list(titles))
-    descriptions = preprocess_str_list(list(descriptions))
-    return list(zip(titles, descriptions))
 
-
-def uniquify(arr)
+def uniquify(arr):
     """ @param: A list of strings """
     """ @return: The same list with duplicate elements removed """
 

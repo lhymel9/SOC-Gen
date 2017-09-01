@@ -1,17 +1,17 @@
-from OccupationProfile import OccupationProfile
+import OccupationProfile as oc
 
 def remove_not_industry(naics, occup_list):
     filtered = []
     for occup in occup_list:
-        if occup[1][:2] == naics:
+        if occup[0][:2] == naics:
             filtered.append(occup)
 
     return filtered
 
-def generate_profiles(occup_list)
+def generate_profiles(occup_list):
     profile_list = []
-    for occup in remove_not_industry(occup_list):
-        profile_list.append(OccupationProfile(occup[0]))
+    for occup in occup_list:
+        profile_list.append(oc.OccupationProfile(occup[0]))
     
     return profile_list
 
@@ -24,22 +24,22 @@ def make_count(survey_arr, target_arr):
     return count
 
 def calc_total(survey, target):
-    return calc_single(survey, target, 'title') + calc_single(survey, target, 'description') +
-           calc_many(survey, target, 'jobs') + calc_many(survey, target, 'tasks') +
-           calc_many(survey, target, 'dwa') + calc_skills(survey, target)
+    return calc_single(survey, target, 'title') + calc_single(survey, target, 'description') + calc_many(survey, target, 'jobs') + calc_many(survey, target, 'tasks') + calc_many(survey, target, 'dwa') + calc_skills(survey, target)
 
 def calc_single(survey, target, key):
-    factor = <float> if key == 'title' else factor = <float>
+    if key == 'title': 
+        factor = 2.5 
+    else: 
+        factor = 1.0
+
     count = make_count(survey['data'], target[key])
     return count*factor
 
-def calc_many(survey, target, key)
+def calc_many(survey, target, key):
     if key == 'jobs':
-        factor = <float>
-    elif key == 'tasks':
-        factor = <float>
+        factor = 2.0
     else:
-        factor = <float>
+        factor = 0.5
 
     count = 0
     for arr in target[key]:
@@ -47,7 +47,10 @@ def calc_many(survey, target, key)
     return count*factor
 
 def calc_skills(survey, target):
-    titles, descriptions =  zip(*target['skills'])
+    try:
+        titles, descriptions =  zip(*target['skills'])
+    except ValueError:
+        return 0
     
     titles_count, descriptions_count = 0, 0
     for arr in list(titles):
@@ -55,7 +58,7 @@ def calc_skills(survey, target):
     for arr in list(descriptions):
         descriptions_count += make_count(survey['data'], arr)
 
-    return titles_count*<float> + descriptions_count*<float>
+    return titles_count*1.5 + descriptions_count*0.5
 
 
 
