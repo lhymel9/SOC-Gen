@@ -4,21 +4,23 @@ import ExtractSOCData as extract
 import ProcessData  as proc
 import ComputeData as compute
 
-def run_main(keywords, industry):
+import pandas as pd
+
+def run_main(keywords):
+    print("Searching... " + keywords)
     survey = {
-        "data": keywords,
-        "naics": industry
+        "data": keywords
     }
 
-    print("Searching... " + industry + " " + keywords)
-    occupations = compute.remove_not_industry(survey['naics'], extract.get_search_results(industry+"+"+keywords.replace(" ","+")))
+    keywords_search = proc.preprocess_str(keywords)
+    occupations = extract.get_search_results("+".join(keywords_search))
 
     survey = proc.process_survey_dict(survey)
     profiles = compute.generate_profiles(occupations)
     occupation_profiles = compute.remove_outliers(survey, profiles)
 
-    for occup in occupation_profiles:
-        print("    " + " ".join(occup.data.all['title']))
+    print("Found: ",len(profiles))
+    print("Removed: ",len(profiles)-len(occupation_profiles))
 
     ranks = []
     for profile in occupation_profiles:
@@ -28,5 +30,27 @@ def run_main(keywords, industry):
     ranks = sorted(ranks, key=lambda x:x[1], reverse=True)
     
     if ranks:
-        return ",".join([keywords,ranks[0][0],ranks[0][2]]) + " at " + str(ranks[0][1])
-    return keywords + ",Null"
+        return ",".join([keywords,ranks[0][0],ranks[0][2]]) + "," + str(ranks[0][1])
+    return keywords + ",Null,Null,Null"
+
+
+def format(unformated):
+    return ''.join([c for c in unformated if c.isalpha() or c.isspace()])
+
+
+with open('./data/in') as f:
+    keywords = f.read()
+f.closed
+
+keywords = keywords.split(',')
+
+results = []
+for kw in keywords:
+    search = format(kw)
+    results.append(run_main(search))
+
+with open('./data/out', 'w') as out:
+    out.write('Search Criteria,SOC_Code,SOC_Name,Score\n')
+    for result in results:
+        out.write(result + '\n')
+out.closed
