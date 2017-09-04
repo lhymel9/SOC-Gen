@@ -5,9 +5,10 @@ import ProcessData  as proc
 import ComputeData as compute
 
 import pandas as pd
+from termcolor import colored
 
 def run_main(keywords):
-    print("Searching... " + keywords)
+    print(colored("Searching... " + keywords, "green"))
     survey = {
         "data": keywords
     }
@@ -21,6 +22,10 @@ def run_main(keywords):
 
     print("Found: ",len(profiles))
     print("Removed: ",len(profiles)-len(occupation_profiles))
+    print("Remaining: ")
+
+    for occup in occupation_profiles:
+        print('     ' + " ".join(occup.data.all['title']))
 
     ranks = []
     for profile in occupation_profiles:
@@ -30,6 +35,7 @@ def run_main(keywords):
     ranks = sorted(ranks, key=lambda x:x[1], reverse=True)
     
     if ranks:
+        print(colored("Output: " + ranks[0][2] + " with " + str(ranks[0][1]) +'\n', 'green'))
         return ",".join([keywords,ranks[0][0],ranks[0][2]]) + "," + str(ranks[0][1])
     return keywords + ",Null,Null,Null"
 
